@@ -1,0 +1,21 @@
+#!/bin/bash
+#┌───────────────────┐
+#│ Список переменных │
+#└───────────────────┘
+NODE_IMAGE='node:22-alpine'   # Версия образа
+NODE_WORKDIR='/home/node/app' # Рабочий каталог внутри контейнера
+NODE_WORKNAME='my-nodejs-app' # Имя контейнера
+NODE_ENTRYPOINT='003.wallet.js'    # Точка входа
+
+#┌───────────────────────────┐
+#│ Запускаем новый контейнер │
+#└───────────────────────────┘
+docker rm -f "$NODE_WORKNAME" &> '/dev/null'
+docker run \
+    -p "$PORT:$PORT"                 \
+    -e "PORT=$PORT"                  \
+    -w "$NODE_WORKDIR"               \
+    -v "$PATH_PROJECT:$NODE_WORKDIR" \
+    --name "$NODE_WORKNAME"          \
+    --rm \
+    "$NODE_IMAGE" "$NODE_ENTRYPOINT"
